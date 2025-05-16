@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Include Spring Boot's base configuration -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!-- Console Appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level> <!-- Only WARN and above go to console -->
+        </filter>
+        <encoder>
+            <!--
+                Pattern:
+                %d{yyyy-MM-dd HH:mm:ss.SSS} - Date and time
+                %-5level                      - Log level (left-aligned, 5 chars)
+                [%thread]                     - Thread name
+                %logger{36}                   - Logger name (abbreviated to 36 chars)
+                %X{traceId} %X{spanId}        - MDC properties for tracing (if you use Spring Cloud Sleuth/Micrometer Tracing)
+                : %msg%n                      - Log message and newline
+            -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%15.15thread] %-36.36logger{36} %X{traceId} %X{spanId} : %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- File Appender (Rolling File) -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/robobob-app.log</file> <!-- Log file name and path -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>logs/robobob-app.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 10MB -->
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%15.15thread] %-36.36logger{36} %X{traceId} %X{spanId} : %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--
+        Configure log levels for your application packages.
+        Set to DEBUG for more detailed logging during development.
+        Set to INFO or WARN for production.
+    -->
+    <logger name="com.robobob" level="INFO"/>
+    <logger name="ch.qos.logback" level="WARN"/>
+
+    <!-- Example: Set a specific logger to TRACE -->
+    <!-- <logger name="com.robobob.domain.expression.Exp4jEvaluator" level="TRACE"/> -->
+
+    <!-- Configure log levels for Spring Framework packages -->
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.springframework.web" level="INFO"/>
+
+    <!--
+        Root logger:
+        Defines the default log level and appenders for all loggers
+        that are not explicitly configured.
+    -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+    <!-- Example: Spring Profile specific configuration -->
+
+    <!--
+    <springProfile name="dev">
+        <logger name="com.robobob" level="DEBUG"/>
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <logger name="com.robobob" level="INFO"/>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+    -->
+
+</configuration>
