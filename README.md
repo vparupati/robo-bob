@@ -39,6 +39,6 @@ RoboBob is a command-line interface (CLI) application designed to handle user qu
    ```bash
    java -jar target/robobob-cli.jar
    ```
-4. Follow the prompts to ask questions and view history.
+4. Follow the prompts to ask questions.
 
 ---

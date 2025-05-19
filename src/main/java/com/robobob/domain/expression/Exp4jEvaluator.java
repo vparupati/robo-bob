@@ -11,7 +11,7 @@ import static com.robobob.domain.Constants.UNKNOWN_ANSWER;
 /**
  *  Evaluates mathematical expressions using the exp4j library.
  *  This class takes a string representation of a mathematical expression and uses the exp4j library
- *  to evaluate it, returning the result as a string.  If an error occurs during evaluation, it returns "unknown".
+ *  to evaluate it, returning the result as a string.  If an error occurs during evaluation, it returns "unknown answer".
  */
 @Component
 public class Exp4jEvaluator implements ExpressionEvaluator {
